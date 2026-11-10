@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="mk" data-lang="mk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Best Alarms</title>
+<meta name="description" content="Best Alarms: аларми со повеќе датуми и термини, македонски говор за времето, целосно офлајн. Alarms with many dates and times, spoken time, fully offline.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect x='4' y='4' width='112' height='112' rx='28' fill='%2371B895'/%3E%3Ccircle cx='54' cy='64' r='28' fill='none' stroke='%23fff' stroke-width='6'/%3E%3Cpath d='M54 50V64L64 70' stroke='%23fff' stroke-width='6' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#F3F8F5; --field:#D8EEE1; --title:#CFE6D9; --text:#24332B; --muted:#56685E;
+  --accent:#71B895; --accent-text:#2F6E50; --line:#C3DCCD; --on-accent:#ffffff;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#161D19; --field:#22362C; --title:#2C3E35; --text:#E2EEE7; --muted:#A9BDB1;
+    --accent:#97D3B2; --accent-text:#A9DEC0; --line:#33493E; --on-accent:#14211A;
+    color-scheme: dark;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+  font-size:1.0625rem; line-height:1.6;
+}
+html[data-lang="mk"] [lang="en"], html[data-lang="en"] [lang="mk"]{display:none}
+a{color:var(--accent-text)}
+a:focus-visible, button:focus-visible{outline:3px solid var(--accent); outline-offset:3px; border-radius:6px}
+.wrap{max-width:1080px; margin:0 auto; padding:0 24px}
+
+header{display:flex; align-items:center; justify-content:space-between; padding:22px 0}
+.brand{display:flex; align-items:center; gap:12px; font-weight:700; font-size:1.25rem; text-decoration:none; color:var(--text)}
+.brand svg{width:40px; height:40px}
+.langs{display:flex; gap:4px; background:var(--field); padding:4px; border-radius:999px}
+.langs button{border:0; background:transparent; color:var(--text); font:inherit; font-size:.9rem; padding:6px 14px; border-radius:999px; cursor:pointer}
+.langs button[aria-pressed="true"]{background:var(--accent); color:var(--on-accent); font-weight:600}
+
+.hero{display:grid; grid-template-columns:1.05fr 1fr; gap:48px; align-items:center; padding:40px 0 72px}
+.hero h1{font-size:clamp(2.2rem,5vw,3.6rem); line-height:1.08; letter-spacing:-.02em; margin:0 0 20px; font-weight:800}
+.hero p.lead{font-size:1.2rem; color:var(--muted); margin:0 0 28px; max-width:34em}
+.status{display:inline-block; background:var(--title); padding:10px 18px; border-radius:12px; font-weight:600}
+
+/* The alarm, as it looks in the app: the signature element of the page */
+.alarm{background:var(--field); border-radius:28px; padding:22px; box-shadow:0 18px 40px -24px rgba(30,70,50,.45)}
+.alarm-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px}
+.alarm-name{font-weight:700; font-size:1.15rem}
+.sw{width:46px; height:26px; border-radius:13px; background:var(--accent); position:relative; flex:none}
+.sw::after{content:""; position:absolute; right:3px; top:3px; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 0 0 1px rgba(0,0,0,.12)}
+.sw.off{background:var(--line)}
+.sw.off::after{right:auto; left:3px}
+.day{display:flex; align-items:center; gap:14px; background:var(--bg); border-radius:16px; padding:12px 14px; margin-top:8px}
+.day .date{min-width:7.2em; font-weight:600}
+.day .date small{display:block; font-weight:400; color:var(--muted); font-size:.82rem}
+.times{display:flex; flex-wrap:wrap; gap:6px; flex:1}
+.t{font-variant-numeric:tabular-nums; font-weight:700; font-size:1.05rem; background:var(--field); padding:3px 10px; border-radius:9px}
+.day.common{background:transparent; border:2px dashed var(--line)}
+.day.common .t{background:var(--title)}
+.voice{margin-top:14px; display:flex; gap:10px; align-items:center; color:var(--muted); font-size:.95rem}
+.voice svg{width:22px; height:22px; flex:none}
+
+section{padding:56px 0; border-top:1px solid var(--line)}
+section h2{font-size:clamp(1.6rem,3vw,2.2rem); line-height:1.2; margin:0 0 28px; letter-spacing:-.01em}
+.features{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px 56px}
+.f h3{margin:0 0 6px; font-size:1.15rem}
+.f p{margin:0; color:var(--muted)}
+.f.big{grid-column:1 / -1; background:var(--field); border-radius:22px; padding:26px 28px}
+.f.big h3{font-size:1.35rem}
+
+.privacy{display:grid; grid-template-columns:1fr auto; gap:24px; align-items:center}
+.privacy p{margin:0; max-width:40em; color:var(--muted)}
+.btn{display:inline-block; text-decoration:none; background:var(--accent); color:var(--on-accent); font-weight:600; padding:12px 22px; border-radius:12px}
+
+footer{padding:36px 0 48px; border-top:1px solid var(--line); color:var(--muted); font-size:.95rem; display:flex; flex-wrap:wrap; gap:8px 32px; justify-content:space-between}
+
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr; gap:36px; padding-top:16px}
+  .features{grid-template-columns:1fr; gap:26px}
+  .privacy{grid-template-columns:1fr}
+  .day{flex-wrap:wrap}
+  .day .date{min-width:0; width:100%}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="brand" href="./">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><rect x="4" y="4" width="112" height="112" rx="28" fill="#71B895"/><circle cx="54" cy="64" r="28" fill="none" stroke="#fff" stroke-width="6"/><path d="M54 50V64L64 70" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M34 34l-8-8M74 34l8-8" stroke="#fff" stroke-width="6" stroke-linecap="round"/><path d="M92 54q8 10 0 20M100 48q13 16 0 32" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none"/></svg>
+      Best Alarms
+    </a>
+    <div class="langs" role="group" aria-label="Language">
+      <button type="button" data-set="mk" aria-pressed="true">МК</button>
+      <button type="button" data-set="en" aria-pressed="false">EN</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div>
+        <h1><span lang="mk">Еден аларм. Многу датуми. Секој со свои термини.</span><span lang="en">One alarm. Many dates. Each with its own times.</span></h1>
+        <p class="lead">
+          <span lang="mk">Best Alarms е апликација за аларми за Android, направена за распореди што не се повторуваат исто секој ден: смени, лекови, обуки, патувања. Избери ги датумите, додај им термини и готово.</span>
+          <span lang="en">Best Alarms is an alarm app for Android, built for schedules that are not the same every day: shifts, medication, training, trips. Pick the dates, add their times, done.</span>
+        </p>
+        <span class="status"><span lang="mk">Наскоро на Google Play. Бесплатно, без реклами.</span><span lang="en">Coming soon to Google Play. Free, no ads.</span></span>
+      </div>
+
+      <div class="alarm" aria-label="Пример аларм / Example alarm">
+        <div class="alarm-head">
+          <span class="alarm-name"><span lang="mk">Пазарење</span><span lang="en">Shopping</span></span>
+          <span class="sw" aria-hidden="true"></span>
+        </div>
+        <div class="day">
+          <span class="date"><span lang="mk">Сре</span><span lang="en">Wed</span> 23.09.<small><span lang="mk">датум</span><span lang="en">date</span></small></span>
+          <span class="times"><span class="t">09:00</span><span class="t">10:00</span><span class="t">17:00</span></span>
+          <span class="sw" aria-hidden="true"></span>
+        </div>
+        <div class="day">
+          <span class="date"><span lang="mk">Пет</span><span lang="en">Fri</span> 25.09.<small><span lang="mk">датум</span><span lang="en">date</span></small></span>
+          <span class="times"><span class="t">13:00</span><span class="t">14:00</span><span class="t">15:00</span><span class="t">20:00</span></span>
+          <span class="sw" aria-hidden="true"></span>
+        </div>
+        <div class="day">
+          <span class="date"><span lang="mk">Нед</span><span lang="en">Sun</span> 27.09.<small><span lang="mk">исклучен</span><span lang="en">turned off</span></small></span>
+          <span class="times"><span class="t">11:30</span></span>
+          <span class="sw off" aria-hidden="true"></span>
+        </div>
+        <div class="day common">
+          <span class="date"><span lang="mk">Заеднички</span><span lang="en">Common</span><small><span lang="mk">за секој датум</span><span lang="en">for every date</span></small></span>
+          <span class="times"><span class="t">07:30</span></span>
+          <span class="sw" aria-hidden="true"></span>
+        </div>
+        <div class="voice">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+          <span><span lang="mk">„Седум часот и триесет минути“</span><span lang="en">“It's seven thirty”</span></span>
+        </div>
+      </div>
+    </div>
+
+    <section aria-labelledby="what">
+      <h2 id="what"><span lang="mk">Што нуди</span><span lang="en">What it does</span></h2>
+      <div class="features">
+        <div class="f big">
+          <h3><span lang="mk">Повеќе датуми и термини во еден аларм</span><span lang="en">Many dates and times in one alarm</span></h3>
+          <p><span lang="mk">Тапни ги датумите во календарот, па на секој датум додај колку термини ти требаат. Секој датум и секој термин има свој прекинувач, а редот „Заеднички“ додава исти термини на сите избрани датуми.</span><span lang="en">Tap the dates in the calendar, then give each date as many times as you need. Every date and every time has its own switch, and the “Common” row adds the same times to all selected dates.</span></p>
+        </div>
+        <div class="f">
+          <h3><span lang="mk">Денес, датуми, неделно, месечно</span><span lang="en">Today, dates, weekly, monthly</span></h3>
+          <p><span lang="mk">Брз аларм само за денес, слободни датуми, избрани денови во неделата (и секоја n-та недела) или ден во месецот.</span><span lang="en">A quick alarm just for today, free dates, chosen weekdays (also every n-th week) or a day of the month.</span></p>
+        </div>
+        <div class="f">
+          <h3><span lang="mk">Го кажува времето</span><span lang="en">Says the time</span></h3>
+          <p><span lang="mk">Природен македонски глас („шест часот и дваесет минути“) или англиски. Можеш да додадеш и свои снимки.</span><span lang="en">A natural Macedonian voice or English speech. You can add your own recordings too.</span></p>
+        </div>
+        <div class="f">
+          <h3><span lang="mk">Snooze со еден допир</span><span lang="en">One-tap snooze</span></h3>
+          <p><span lang="mk">Сите одложувања на еден екран, ограничување на бројот на snooze и „Dismiss за денес“ кога сакаш да откажеш сè до утре.</span><span lang="en">All snooze options on one screen, a limit on how many times, and “Dismiss for today” when you want everything off until tomorrow.</span></p>
+        </div>
+        <div class="f">
+          <h3><span lang="mk">Ѕвони кога треба</span><span lang="en">Rings when it should</span></h3>
+          <p><span lang="mk">И кога апликацијата е затворена, телефонот заклучен или рестартиран, без отклучување.</span><span lang="en">Even when the app is closed, the phone is locked or restarted, without unlocking.</span></p>
+        </div>
+        <div class="f">
+          <h3><span lang="mk">Твој изглед</span><span lang="en">Your look</span></h3>
+          <p><span lang="mk">Пет пастелни скинови, ден, ноќ или според телефонот, категории со бои и македонски или англиски јазик.</span><span lang="en">Five pastel skins, day, night or system mode, colour categories, Macedonian or English.</span></p>
+        </div>
+        <div class="f">
+          <h3><span lang="mk">Пренос на нов телефон</span><span lang="en">Move to a new phone</span></h3>
+          <p><span lang="mk">Извези ги сите аларми во еден фајл и увези ги на другиот телефон.</span><span lang="en">Export all alarms to one file and import them on the other phone.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="priv">
+      <h2 id="priv"><span lang="mk">Целосно офлајн</span><span lang="en">Fully offline</span></h2>
+      <div class="privacy">
+        <p><span lang="mk">Апликацијата нема пристап до интернет, нема реклами, нема сметка и не собира никакви податоци. Сè што внесуваш останува само на твојот телефон.</span><span lang="en">The app has no internet access, no ads, no account and collects no data. Everything you enter stays on your phone.</span></p>
+        <a class="btn" href="privacy.html"><span lang="mk">Изјава за приватност</span><span lang="en">Privacy policy</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© <span class="year">2026</span> ZONEL Software, Zoran Nasteski</span>
+    <span><span lang="mk">Контакт:</span><span lang="en">Contact:</span> <a href="mailto:zonel.android@gmail.com">zonel.android@gmail.com</a></span>
+  </footer>
+</div>
+<script>
+(function(){
+  var html=document.documentElement;
+  function set(l){
+    html.setAttribute('data-lang',l); html.setAttribute('lang',l);
+    document.querySelectorAll('.langs button').forEach(function(b){b.setAttribute('aria-pressed', b.dataset.set===l?'true':'false');});
+    try{localStorage.setItem('ba-lang',l);}catch(e){}
+  }
+  var saved=null; try{saved=localStorage.getItem('ba-lang');}catch(e){}
+  var q=new URLSearchParams(location.search).get('lang');
+  var l=q||saved||((navigator.language||'').toLowerCase().indexOf('mk')===0?'mk':'en');
+  set(l==='mk'?'mk':'en');
+  document.querySelectorAll('.langs button').forEach(function(b){b.addEventListener('click',function(){set(b.dataset.set);});});
+  document.querySelectorAll('.year').forEach(function(y){y.textContent=new Date().getFullYear();});
+})();
+</script>
+</body>
+</html>
